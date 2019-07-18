@@ -1,7 +1,8 @@
 image: "rust:latest"
 
 before_script:
-  - apt install npm
+  - curl -sL https://deb.nodesource.com/setup_12.x | bash -
+  - apt-get install -y nodejs
   - npm install -g sass
   - rustup default nightly
   - rustup update
