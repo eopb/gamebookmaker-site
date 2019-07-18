@@ -1,5 +1,5 @@
 [package]
-name = "rocket-tests"
+name = "gamebookmaker-site"
 version = "0.1.0"
 authors = ["Ethan Brierley <ethanboxx@gmail.com>"]
 edition = "2018"
