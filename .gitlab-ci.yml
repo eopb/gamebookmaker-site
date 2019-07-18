@@ -1,6 +1,8 @@
 image: "rust:latest"
 
 before_script:
+  - apt install npm
+  - npm install -g sass
   - rustup default nightly
   - rustup update
 
