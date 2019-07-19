@@ -1,3 +1,6 @@
+//! Builds scss files with sass to produce css.
+//! Currently the sass is only built on non-windows platforms.
+
 use std::process::Command;
 
 fn main() {
