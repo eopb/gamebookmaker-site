@@ -16,3 +16,6 @@ serde_json = "1.0"
 version = "0.4.2"
 default-features = true
 features = ["handlebars_templates"]
+
+[build-dependencies]
+dotenv = "0.10.0"
