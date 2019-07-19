@@ -1,2 +1,2 @@
-# gamebookmaker-site
+# Game Book Maker Site
 
