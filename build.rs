@@ -7,9 +7,7 @@ use std::process::Command;
 
 fn main() {
     dotenv().ok();
-    if !cfg!(target_os = "windows")
-        && !env::var("STOP_CARGO_BUILD_SASS").is_ok()
-    {
+    if !cfg!(target_os = "windows") && !env::var("STOP_CARGO_BUILD_SASS").is_ok() {
         let output = Command::new("sass")
             .arg("style:style")
             .status()
