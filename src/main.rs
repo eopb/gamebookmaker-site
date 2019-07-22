@@ -17,6 +17,12 @@ fn index() -> Template {
 fn guest_editor() -> Template {
     Template::render("editor", &json!({}))
 }
+
+#[get("/404")]
+fn e_404() -> Template {
+    Template::render("404", &json!({}))
+}
+
 #[derive(FromForm)]
 struct Submit {
     chapter_num_1: String,
@@ -28,7 +34,7 @@ fn guest_editor_post(task: Form<Submit>) -> Template {
 
 fn main() {
     rocket::ignite()
-        .mount("/", routes![index, guest_editor, guest_editor_post])
+        .mount("/", routes![index, guest_editor, guest_editor_post, e_404])
         .mount("/public/style", StaticFiles::from("style"))
         .attach(Template::fairing())
         .launch();
