@@ -2,10 +2,6 @@
     width: 50%;
 }
 
-.container {
-    text-align: center;
-}
-
 header {
     text-align: center;
 }
@@ -13,3 +9,11 @@ header {
 header h1 {
     font-size: 500%;
 }
+
+header a {
+    background-color: #BDC3C7;
+    padding: 5px;
+    margin: 6px;
+    color: #ffffff;
+}
+
