@@ -31,7 +31,7 @@ struct Submit {
 
 #[post("/projects/<user>/new", data = "<task>")]
 fn submitted_project_name(user: String, task: Form<Submit>) -> Redirect {
-    Redirect::to(format!("/projects/{}/{}", user, task.into_inner().message))
+    Redirect::to(uri!(project_editor: user=user, project_name=task.into_inner().message))
 }
 
 #[get("/projects/<user>/<project_name>", rank = 2)]
