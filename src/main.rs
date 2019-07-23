@@ -18,6 +18,7 @@ fn guest_editor() -> Template {
     Template::render("editor", &json!({}))
 }
 
+#[catch(404)]
 #[get("/404")]
 fn e_404() -> Template {
     Template::render("404", &json!({}))
@@ -36,6 +37,7 @@ fn main() {
     rocket::ignite()
         .mount("/", routes![index, guest_editor, guest_editor_post, e_404])
         .mount("/public/style", StaticFiles::from("style"))
+        .register(catchers![e_404])
         .attach(Template::fairing())
         .launch();
 }
