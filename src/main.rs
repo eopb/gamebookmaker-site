@@ -42,6 +42,11 @@ fn project_editor(user: String, project_name: String) -> Template {
     )
 }
 
+#[catch(404)]
+fn e_404() -> Template {
+    Template::render("404", &json!({}))
+}
+
 #[get("/projects/<user>/<project_name>/chapters/<chapter_num>")]
 fn chapter_editor(user: String, project_name: String, chapter_num: u32) -> Template {
     Template::render(
@@ -68,6 +73,7 @@ fn main() {
             ],
         )
         .mount("/public/style", StaticFiles::from("style"))
+        .register(catchers![e_404])
         .attach(Template::fairing())
         .launch();
 }
