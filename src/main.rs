@@ -5,6 +5,7 @@
 #[macro_use]
 extern crate rocket;
 
+use rocket::{request::Form, response::Redirect};
 use rocket_contrib::{serve::StaticFiles, templates::Template};
 use serde_json::json;
 
@@ -18,7 +19,22 @@ fn user_page(user: String) -> Template {
     Template::render("user_page", &json!({ "user": user }))
 }
 
-#[get("/projects/<user>/<project_name>")]
+#[get("/projects/<user>/new", rank = 1)]
+fn new_project(user: String) -> Template {
+    Template::render("new", &json!({ "user": user, "text": "Name your project" }))
+}
+
+#[derive(FromForm)]
+struct Submit {
+    message: String,
+}
+
+#[post("/projects/<user>/new", data = "<task>")]
+fn submitted_project_name(user: String, task: Form<Submit>) -> Redirect {
+    Redirect::to(format!("/projects/{}/{}", user, task.into_inner().message))
+}
+
+#[get("/projects/<user>/<project_name>", rank = 2)]
 fn project_editor(user: String, project_name: String) -> Template {
     Template::render(
         "project_editor",
@@ -42,7 +58,14 @@ fn main() {
     rocket::ignite()
         .mount(
             "/",
-            routes![index, user_page, project_editor, chapter_editor],
+            routes![
+                index,
+                user_page,
+                project_editor,
+                chapter_editor,
+                new_project,
+                submitted_project_name
+            ],
         )
         .mount("/public/style", StaticFiles::from("style"))
         .attach(Template::fairing())
