@@ -30,7 +30,11 @@ fn project_editor(user: String, project_name: String) -> Template {
 fn chapter_editor(user: String, project_name: String, chapter_num: u32) -> Template {
     Template::render(
         "chapter_editor",
-        &json!({ "user": user, "project_name": project_name, "chapter_num": chapter_num}),
+        &json!({
+            "user": user,
+            "project_name": project_name,
+            "chapter_num": chapter_num
+        }),
     )
 }
 
