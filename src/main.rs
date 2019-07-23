@@ -1,10 +1,10 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 #![deny(clippy::pedantic)]
+#![allow(clippy::needless_pass_by_value)]
 
 #[macro_use]
 extern crate rocket;
 
-use rocket::request::Form;
 use rocket_contrib::{serve::StaticFiles, templates::Template};
 use serde_json::json;
 
@@ -13,22 +13,37 @@ fn index() -> Template {
     Template::render("index", &json!({}))
 }
 
-#[get("/guest")]
-fn guest_editor() -> Template {
-    Template::render("editor", &json!({}))
+#[get("/users/<user>")]
+fn user_page(user: String) -> Template {
+    Template::render("user_page", &json!({ "user": user }))
 }
-#[derive(FromForm)]
-struct Submit {
-    chapter_num_1: String,
+
+#[get("/projects/<user>/<project_name>")]
+fn project_editor(user: String, project_name: String) -> Template {
+    Template::render(
+        "project_editor",
+        &json!({ "user": user, "project_name": project_name  }),
+    )
 }
-#[post("/guest", data = "<task>")]
-fn guest_editor_post(task: Form<Submit>) -> Template {
-    Template::render("editor", &json!({}))
+
+#[get("/projects/<user>/<project_name>/chapters/<chapter_num>")]
+fn chapter_editor(user: String, project_name: String, chapter_num: u32) -> Template {
+    Template::render(
+        "chapter_editor",
+        &json!({
+            "user": user,
+            "project_name": project_name,
+            "chapter_num": chapter_num
+        }),
+    )
 }
 
 fn main() {
     rocket::ignite()
-        .mount("/", routes![index, guest_editor, guest_editor_post])
+        .mount(
+            "/",
+            routes![index, user_page, project_editor, chapter_editor],
+        )
         .mount("/public/style", StaticFiles::from("style"))
         .attach(Template::fairing())
         .launch();
