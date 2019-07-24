@@ -21,7 +21,13 @@ fn user_page(user: String) -> Template {
 
 #[get("/projects/<user>/new", rank = 1)]
 fn new_project(user: String) -> Template {
-    Template::render("new", &json!({ "user": user, "text": "Name your project" }))
+    Template::render(
+        "new",
+        &json!({
+            "user": user,
+            "text": "Name your project",
+            "post_url": uri!(submitted_project_name: user = user.clone()).path() }),
+    )
 }
 
 #[derive(FromForm)]
@@ -31,7 +37,10 @@ struct Submit {
 
 #[post("/projects/<user>/new", data = "<task>")]
 fn submitted_project_name(user: String, task: Form<Submit>) -> Redirect {
-    Redirect::to(uri!(project_editor: user=user, project_name=task.into_inner().message))
+    Redirect::to(uri!(
+        project_editor: user = user,
+        project_name = task.into_inner().message
+    ))
 }
 
 #[get("/projects/<user>/<project_name>", rank = 2)]
