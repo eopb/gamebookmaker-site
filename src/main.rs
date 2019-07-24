@@ -26,7 +26,8 @@ fn new_project(user: String) -> Template {
         &json!({
             "user": user,
             "text": "Name your project",
-            "post_url": uri!(submitted_project_name: user = user.clone()).path() }),
+            "post_url": uri!(submitted_project_name: user = user.clone()).path()
+        }),
     )
 }
 
