@@ -2,7 +2,8 @@
 #![deny(clippy::pedantic)]
 #![allow(clippy::needless_pass_by_value)]
 
-mod data;
+mod game_data;
+mod user_data;
 
 #[macro_use]
 extern crate rocket;
@@ -74,9 +75,15 @@ fn chapter_editor(user: String, project_name: String, chapter_num: u32) -> Templ
 }
 
 fn main() {
-    let mut file = File::create("foo.json").unwrap();
-    file.write_all(data::Project::json_example().as_bytes())
-        .unwrap();
+    // let mut file = File::create("foo.json").unwrap();
+    // file.write_all(game_data::Project::json_example().as_bytes())
+    //     .unwrap();
+    // {
+    //     let mut file = File::create("data/guest/user_info.json").unwrap();
+    //     file.write_all(serde_json::to_string(&user_data::UserInfo::default()).unwrap().as_bytes())
+    //         .unwrap();
+    // }
+    println!("{:#?}", user_data::UserInfo::get("guest"));
     rocket::ignite()
         .mount(
             "/",
