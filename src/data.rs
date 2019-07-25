@@ -29,5 +29,11 @@ struct Chapter {
 #[derive(Deserialize, Debug, Serialize)]
 struct Choice {
     text: String,
-    goes_to_key: u32,
+    event: ChoiceEvent,
+}
+
+#[derive(Deserialize, Debug, Serialize)]
+enum ChoiceEvent {
+    GameEnd,
+    GoesTo(u32),
 }
