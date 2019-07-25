@@ -2,6 +2,8 @@
 #![deny(clippy::pedantic)]
 #![allow(clippy::needless_pass_by_value)]
 
+mod data;
+
 #[macro_use]
 extern crate rocket;
 
