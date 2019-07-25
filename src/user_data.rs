@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use std::fs::File;
 use std::io::prelude::*;
+use std::path::Path;
 
 #[derive(Deserialize, Debug, Serialize, Clone)]
 pub struct UserInfo {
@@ -38,16 +39,19 @@ impl UserInfo {
         self.clone()
     }
     pub fn add_project_for_user(user: &str, name: &str) -> Result<(), std::io::Error> {
-        let path = dbg!(format!("data/{}/user_info.json", user));
-        let mut file = File::open(path.clone())?;
+        let path = format!("data/{}/user_info.json", user);
+        let mut file = File::open(&path)?;
         let mut contents = String::new();
         file.read_to_string(&mut contents)?;
-        let mut info: Self = serde_json::from_str(&contents).unwrap();
-        let info = info.add_project(name);
-        contents = serde_json::to_string(&info).unwrap(); // Not mutating files.
         drop(file);
-        let mut file = File::create(path)?;
-        file.write(contents.as_bytes()).expect("!");
+        contents = serde_json::to_string(
+            &serde_json::from_str::<Self>(&contents)
+                .unwrap()
+                .add_project(name),
+        )
+        .unwrap();
+        let mut file = File::create(&path)?;
+        file.write(contents.as_bytes())?;
         Ok(())
     }
 }
