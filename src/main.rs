@@ -83,6 +83,7 @@ fn main() {
     //     file.write_all(serde_json::to_string(&user_data::UserInfo::default()).unwrap().as_bytes())
     //         .unwrap();
     // }
+    user_data::UserInfo::add_project_for_user("guest", "thing");
     println!("{:#?}", user_data::UserInfo::get("guest"));
     rocket::ignite()
         .mount(
