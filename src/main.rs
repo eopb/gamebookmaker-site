@@ -2,12 +2,17 @@
 #![deny(clippy::pedantic)]
 #![allow(clippy::needless_pass_by_value)]
 
+mod game_data;
+mod user_data;
+
 #[macro_use]
 extern crate rocket;
 
 use rocket::{request::Form, response::Redirect};
 use rocket_contrib::{serve::StaticFiles, templates::Template};
 use serde_json::json;
+use std::fs::File;
+use std::io::prelude::*;
 
 #[get("/")]
 fn index() -> Template {
@@ -70,6 +75,16 @@ fn chapter_editor(user: String, project_name: String, chapter_num: u32) -> Templ
 }
 
 fn main() {
+    // let mut file = File::create("foo.json").unwrap();
+    // file.write_all(game_data::Project::json_example().as_bytes())
+    //     .unwrap();
+    // {
+    //     let mut file = File::create("data/guest/user_info.json").unwrap();
+    //     file.write_all(serde_json::to_string(&user_data::UserInfo::default()).unwrap().as_bytes())
+    //         .unwrap();
+    // }
+    // user_data::UserInfo::add_project_for_user("guest", "thing").unwrap();
+    println!("{:#?}", user_data::UserInfo::get("guest"));
     rocket::ignite()
         .mount(
             "/",
