@@ -1,0 +1,24 @@
+{
+    "name": "Example project",
+    "chapters": [{
+            "key": 1,
+            "text": "Start of story",
+            "choices": [{
+                    "text": "continue",
+                    "event": {
+                        "GoesTo": 2
+                    }
+                },
+                {
+                    "text": "End",
+                    "event": "GameEnd"
+                }
+            ]
+        },
+        {
+            "key": 2,
+            "text": "End",
+            "choices": []
+        }
+    ]
+}

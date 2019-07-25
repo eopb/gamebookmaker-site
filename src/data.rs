@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Debug, Serialize)]
-struct Project {
+pub struct Project {
     name: String,
     chapters: Vec<Chapter>,
 }
@@ -10,12 +10,31 @@ impl Project {
     fn example() -> Self {
         Project {
             name: "Example project".to_string(),
-            chapters: vec![Chapter {
-                key: 1,
-                text: "Start of story".to_string(),
-                choices: vec![],
-            }],
+            chapters: vec![
+                Chapter {
+                    key: 1,
+                    text: "Start of story".to_string(),
+                    choices: vec![
+                        Choice {
+                            text: "continue".to_string(),
+                            event: GoesTo(2),
+                        },
+                        Choice {
+                            text: "End".to_string(),
+                            event: GameEnd,
+                        },
+                    ],
+                },
+                Chapter {
+                    key: 2,
+                    text: "End".to_string(),
+                    choices: vec![],
+                },
+            ],
         }
+    }
+    pub fn json_example() -> String {
+        serde_json::to_string(&Self::example()).unwrap()
     }
 }
 
@@ -37,3 +56,4 @@ enum ChoiceEvent {
     GameEnd,
     GoesTo(u32),
 }
+use ChoiceEvent::*;
