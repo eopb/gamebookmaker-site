@@ -9,7 +9,9 @@ mod user_data;
 extern crate rocket;
 
 use rocket::{request::Form, response::Redirect};
+use rocket_cache_response::CacheResponse;
 use rocket_contrib::{serve::StaticFiles, templates::Template};
+
 use serde_json::json;
 
 #[get("/")]
@@ -18,12 +20,16 @@ fn index() -> Template {
 }
 
 #[get("/users/guest")]
-fn user_page_guest() -> Template {
+fn user_page_guest() -> CacheResponse<Template> {
     let user = "guest";
-    Template::render(
-        "user_page",
-        &dbg!(json!({ "user": user, "info": user_data::UserInfo::get(user).unwrap() })),
-    )
+    CacheResponse::Public {
+        responder: Template::render(
+            "user_page",
+            &dbg!(json!({ "user": user, "info": user_data::UserInfo::get(user).unwrap() })),
+        ),
+        max_age: 10, // cached for seconds
+        must_revalidate: true,
+    }
 }
 
 #[get("/users/<user>")]
