@@ -21,9 +21,10 @@ impl Default for UserInfo {
 
 impl UserInfo {
     pub fn get(name: &str) -> Result<Self, std::io::Error> {
-        let mut file = File::open(format!("data/{}/user_info.json", name))?;
         let mut contents = String::new();
+        let mut file = File::open(format!("data/{}/user_info.json", name))?;
         file.read_to_string(&mut contents)?;
+        drop(file);
         Ok(serde_json::from_str(&contents).unwrap())
     }
     // Do not use
