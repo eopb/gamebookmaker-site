@@ -43,6 +43,7 @@ struct Submit {
 
 #[post("/projects/<user>/new", data = "<task>")]
 fn submitted_project_name(user: String, task: Form<Submit>) -> Redirect {
+    user_data::UserInfo::add_project_for_user(&user, &task.message).unwrap();
     Redirect::to(uri!(
         project_editor: user = user,
         project_name = task.into_inner().message
