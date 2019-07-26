@@ -71,7 +71,28 @@ fn e_404() -> Template {
     Template::render("404", &json!({}))
 }
 
-#[get("/projects/<user>/<project_name>/chapters/<chapter_num>")]
+#[get("/projects/<user>/<project_name>/chapters/new", rank = 1)]
+fn chapter_editor_new(user: String, project_name: String) -> Template {
+    Template::render(
+        "new",
+        &json!({
+            "text": "Give your chapter for key",
+            "post_url": uri!(submitted_chapter_key: user = user, project_name = project_name).path()
+        }),
+    )
+}
+
+#[post("/projects/<user>/<project_name>/chapters/new", data = "<task>")]
+fn submitted_chapter_key(user: String, project_name: String, task: Form<Submit>) -> Redirect {
+    let chapter_num = task.into_inner().message.parse::<u32>().unwrap();
+    Redirect::to(uri!(
+        chapter_editor: user = user,
+        project_name = project_name,
+        chapter_num = chapter_num
+    ))
+}
+
+#[get("/projects/<user>/<project_name>/chapters/<chapter_num>", rank = 2)]
 fn chapter_editor(user: String, project_name: String, chapter_num: u32) -> Template {
     Template::render(
         "chapter_editor",
@@ -104,6 +125,8 @@ fn main() {
                 user_page,
                 user_page_guest,
                 project_editor,
+                chapter_editor_new,
+                submitted_chapter_key,
                 chapter_editor,
                 new_project,
                 submitted_project_name

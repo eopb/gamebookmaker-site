@@ -10,10 +10,11 @@
 
 <body>
     <form action="/guest" method="post" accept-charset="utf-8">
-        <div class="chapter">
-            <h1>Chapter</h1>
-            <p><input placeholder="" name="chapter_num_1" type="text"></input></p>
-        </div>
+        <h1>Chapter</h1>
+        <p>Chapter Number <input name="key" type="text" value="{{chapter_num}}"></input></p>
+        <p>Chapter Text <input name="text" type="text"></input></p>
+        <p><a href="/projects/{{user}}/{{project_name}}/chapters/{{chapter_num}}">New Choice</a></p>
+        <p><input type="submit" value="Go"></p>
     </form>
 </body>
 
