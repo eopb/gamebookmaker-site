@@ -8,7 +8,7 @@ pub struct Project {
 
 impl Project {
     fn example() -> Self {
-        Project {
+        Self {
             name: "Example project".to_string(),
             chapters: vec![
                 Chapter {
@@ -62,4 +62,4 @@ enum ChoiceEvent {
     GameEnd,
     GoesTo(u32),
 }
-use ChoiceEvent::*;
+use ChoiceEvent::{GameEnd, GoesTo};
