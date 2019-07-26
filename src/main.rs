@@ -3,6 +3,7 @@
 #![allow(clippy::needless_pass_by_value)]
 
 mod game_data;
+mod no_cache;
 mod user_data;
 
 #[macro_use]
@@ -18,12 +19,12 @@ fn index() -> Template {
 }
 
 #[get("/users/guest")]
-fn user_page_guest() -> Template {
+fn user_page_guest() -> no_cache::Template {
     let user = "guest";
-    Template::render(
+    no_cache::Template::with(Template::render(
         "user_page",
         &dbg!(json!({ "user": user, "info": user_data::UserInfo::get(user).unwrap() })),
-    )
+    ))
 }
 
 #[get("/users/<user>")]
