@@ -23,7 +23,7 @@ fn user_page_guest() -> no_cache::Template {
     let user = "guest";
     no_cache::Template::with(Template::render(
         "user_page",
-        &dbg!(json!({ "user": user, "info": user_data::UserInfo::get(user).unwrap() })),
+        json!({ "user": user, "info": user_data::UserInfo::get(user).unwrap() }),
     ))
 }
 
