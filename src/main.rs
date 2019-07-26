@@ -85,7 +85,7 @@ fn main() {
     //         .unwrap();
     // }
     // user_data::UserInfo::add_project_for_user("guest", "thing").unwrap();
-    println!("{:#?}", user_data::UserInfo::get("guest"));
+    // println!("{:#?}", user_data::UserInfo::get("guest"));
     rocket::ignite()
         .mount(
             "/",
