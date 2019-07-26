@@ -19,9 +19,14 @@ fn index() -> Template {
     Template::render("index", &json!({}))
 }
 
+#[get("/users/guest")]
+fn user_page_guest() -> Template {
+    Template::render("user_page", &json!({ "user": "guest" }))
+}
+
 #[get("/users/<user>")]
-fn user_page(user: String) -> Template {
-    Template::render("user_page", &json!({ "user": user }))
+fn user_page(user: String) -> &'static str {
+    "user not found"
 }
 
 #[get("/projects/<user>/new", rank = 1)]
@@ -92,6 +97,7 @@ fn main() {
             routes![
                 index,
                 user_page,
+                user_page_guest,
                 project_editor,
                 chapter_editor,
                 new_project,
