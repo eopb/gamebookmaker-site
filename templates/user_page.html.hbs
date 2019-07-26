@@ -9,7 +9,15 @@
 </head>
 
 <body>
-    Page that list current projects for a user.
+    <h1>Welcome {{user}}</h1>
+    <h2>Your Projects</h2>
+    {{#if info.projects}}
+    {{#each info.projects}}
+    <p><a href="/projects/{{../user}}/{{this}}">{{this}}</a></p>
+    {{/each}}
+    {{else}}
+    <p>User has no projects</p>
+    {{/if}}
     <p><a href="/projects/{{user}}/new">Start new project</a></p>
 </body>
 

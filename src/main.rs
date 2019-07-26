@@ -19,7 +19,11 @@ fn index() -> Template {
 
 #[get("/users/guest")]
 fn user_page_guest() -> Template {
-    Template::render("user_page", &json!({ "user": "guest" }))
+    let user = "guest";
+    Template::render(
+        "user_page",
+        &dbg!(json!({ "user": user, "info": user_data::UserInfo::get(user).unwrap() })),
+    )
 }
 
 #[get("/users/<user>")]
