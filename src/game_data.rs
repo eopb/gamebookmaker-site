@@ -8,7 +8,7 @@ pub struct Project {
 
 impl Project {
     fn example() -> Self {
-        Project {
+        Self {
             name: "Example project".to_string(),
             chapters: vec![
                 Chapter {
@@ -31,6 +31,12 @@ impl Project {
                     choices: vec![],
                 },
             ],
+        }
+    }
+    pub fn new(name: &str) -> Self {
+        Self {
+            name: name.to_string(),
+            chapters: Vec::new(),
         }
     }
     pub fn json_example() -> String {
@@ -56,4 +62,4 @@ enum ChoiceEvent {
     GameEnd,
     GoesTo(u32),
 }
-use ChoiceEvent::*;
+use ChoiceEvent::{GameEnd, GoesTo};
