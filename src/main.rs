@@ -59,7 +59,7 @@ fn submitted_project_name(user: String, task: Form<Submit>) -> Redirect {
 fn project_editor(user: String, project_name: String) -> Template {
     Template::render(
         "project_editor",
-        &json!({ "user": user, "project_name": project_name  }),
+        &json!({ "user": user, "project_name": project_name }),
     )
 }
 
