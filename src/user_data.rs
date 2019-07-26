@@ -4,6 +4,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
+use crate::game_data::Project;
+
 #[derive(Deserialize, Debug, Serialize, Clone)]
 pub struct UserInfo {
     projects: Vec<String>,
@@ -19,9 +21,10 @@ impl Default for UserInfo {
 
 impl UserInfo {
     pub fn get(name: &str) -> Result<Self, std::io::Error> {
-        let mut file = File::open(format!("data/{}/user_info.json", name))?;
         let mut contents = String::new();
+        let mut file = File::open(format!("data/{}/user_info.json", name))?;
         file.read_to_string(&mut contents)?;
+        drop(file);
         Ok(serde_json::from_str(&contents).unwrap())
     }
     // Do not use
@@ -39,14 +42,25 @@ impl UserInfo {
         self.clone()
     }
     pub fn add_project_for_user(user: &str, name: &str) -> Result<(), std::io::Error> {
-        replace_file_content(&format!("data/{}/user_info.json", user), |contents| {
-            serde_json::to_string(
-                &serde_json::from_str::<Self>(&contents)
+        if Self::get(user).unwrap().projects.iter().any(|x| x == name) {
+            panic!("Project already there.")
+        } else {
+            let mut data_file = File::create(&format!("data/{}/projects/{}.json", user, name))?;
+            data_file.write(
+                serde_json::to_string(&Project::new(name))
                     .unwrap()
-                    .add_project(name),
-            )
-            .unwrap()
-        })
+                    .as_bytes(),
+            )?;
+            drop(data_file);
+            replace_file_content(&format!("data/{}/user_info.json", user), |contents| {
+                serde_json::to_string(
+                    &serde_json::from_str::<Self>(&contents)
+                        .unwrap()
+                        .add_project(name),
+                )
+                .unwrap()
+            })
+        }
     }
 }
 
