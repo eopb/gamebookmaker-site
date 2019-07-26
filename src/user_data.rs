@@ -44,7 +44,11 @@ impl UserInfo {
     // Does not yet handle project already being there.
     pub fn add_project_for_user(user: &str, name: &str) -> Result<(), std::io::Error> {
         let mut data_file = File::create(&format!("data/{}/projects/{}.json", user, name))?;
-        data_file.write(serde_json::to_string(&Project::new(name)).unwrap().as_bytes())?;
+        data_file.write(
+            serde_json::to_string(&Project::new(name))
+                .unwrap()
+                .as_bytes(),
+        )?;
         drop(data_file);
         replace_file_content(&format!("data/{}/user_info.json", user), |contents| {
             serde_json::to_string(
