@@ -33,6 +33,12 @@ impl Project {
             ],
         }
     }
+    pub fn new(name: &str) -> Self {
+        Self {
+            name: name.to_string(),
+            chapters: Vec::new(),
+        }
+    }
     pub fn json_example() -> String {
         serde_json::to_string(&Self::example()).unwrap()
     }
