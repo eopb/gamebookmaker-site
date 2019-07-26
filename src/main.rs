@@ -3,6 +3,7 @@
 #![allow(clippy::needless_pass_by_value)]
 
 mod game_data;
+mod no_cache;
 mod user_data;
 
 #[macro_use]
@@ -11,17 +12,24 @@ extern crate rocket;
 use rocket::{request::Form, response::Redirect};
 use rocket_contrib::{serve::StaticFiles, templates::Template};
 use serde_json::json;
-use std::fs::File;
-use std::io::prelude::*;
 
 #[get("/")]
 fn index() -> Template {
     Template::render("index", &json!({}))
 }
 
+#[get("/users/guest")]
+fn user_page_guest() -> no_cache::Template {
+    let user = "guest";
+    no_cache::Template::with(Template::render(
+        "user_page",
+        json!({ "user": user, "info": user_data::UserInfo::get(user).unwrap() }),
+    ))
+}
+
 #[get("/users/<user>")]
-fn user_page(user: String) -> Template {
-    Template::render("user_page", &json!({ "user": user }))
+fn user_page(user: String) -> &'static str {
+    "user not found"
 }
 
 #[get("/projects/<user>/new", rank = 1)]
@@ -54,7 +62,7 @@ fn submitted_project_name(user: String, task: Form<Submit>) -> Redirect {
 fn project_editor(user: String, project_name: String) -> Template {
     Template::render(
         "project_editor",
-        &json!({ "user": user, "project_name": project_name  }),
+        &json!({ "user": user, "project_name": project_name }),
     )
 }
 
@@ -76,6 +84,8 @@ fn chapter_editor(user: String, project_name: String, chapter_num: u32) -> Templ
 }
 
 fn main() {
+    // use std::fs::File;
+    // use std::io::prelude::*;
     // let mut file = File::create("foo.json").unwrap();
     // file.write_all(game_data::Project::json_example().as_bytes())
     //     .unwrap();
@@ -92,6 +102,7 @@ fn main() {
             routes![
                 index,
                 user_page,
+                user_page_guest,
                 project_editor,
                 chapter_editor,
                 new_project,

@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::Path;
+use std::{fs::File, io::prelude::*};
 
 use crate::game_data::Project;
 
@@ -46,7 +44,7 @@ impl UserInfo {
             panic!("Project already there.")
         } else {
             let mut data_file = File::create(&format!("data/{}/projects/{}.json", user, name))?;
-            data_file.write(
+            data_file.write_all(
                 serde_json::to_string(&Project::new(name))
                     .unwrap()
                     .as_bytes(),
@@ -71,6 +69,6 @@ fn replace_file_content<F: Fn(String) -> String>(path: &str, f: F) -> Result<(),
     drop(file);
     contents = f(contents);
     let mut file = File::create(path)?;
-    file.write(contents.as_bytes())?;
+    file.write_all(contents.as_bytes())?;
     Ok(())
 }
