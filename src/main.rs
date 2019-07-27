@@ -76,7 +76,7 @@ fn chapter_editor_new(user: String, project_name: String) -> Template {
     Template::render(
         "new",
         &json!({
-            "text": "Give your chapter for key",
+            "text": "Give your chapter a key",
             "post_url": uri!(submitted_chapter_key: user = user, project_name = project_name).path()
         }),
     )
