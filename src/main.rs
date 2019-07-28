@@ -27,8 +27,8 @@ fn user_page_guest() -> no_cache::Template {
     ))
 }
 
-#[get("/users/<user>")]
-fn user_page(user: String) -> &'static str {
+#[get("/users/<_user>")]
+fn user_page(_user: String) -> &'static str {
     "user not found"
 }
 
